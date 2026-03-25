@@ -1,6 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import AboutMe from './components/AboutMe';
+import Education from './components/Education';
+import Hobbies from './components/Hobbies';
+import Skills from './components/Skills';
 
 function App() {
   return (
@@ -19,6 +23,13 @@ function App() {
           Learn React
         </a>
       </header>
+
+      <main>
+        <AboutMe />
+        <Education />
+        <Hobbies />
+        <Skills />
+      </main>
     </div>
   );
 }
