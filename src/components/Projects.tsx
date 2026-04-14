@@ -1,37 +1,53 @@
 import React, { useEffect, useState } from 'react';
 
-import axios from 'axios';
+import { useAppDispatch, useAppSelector } from '../hooks';
 
-interface Project {
-  id: number;
-  name: string;
-  description: string;
-  images: string;
-}
+import { fetchProjects } from '../portfolioSlice';
 
 export default function Projects() {
-  const [data, setData] = useState<Project[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const projects = useAppSelector((state) => state.portfolio.projects);
+
+  const status = useAppSelector((state) => state.portfolio.status);
+
+  const error = useAppSelector((state) => state.portfolio.error);
 
   useEffect(() => {
-    axios
-      .get('/api/data')
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error('There was an error fetching the data!', error);
-      });
-  }, []);
+    if (status === 'idle') {
+      dispatch(fetchProjects());
+    }
+  }, [status, dispatch]);
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   return (
     <div>
-      <h1>Projects queried from SQLite</h1>
+      <button onClick={toggleVisibility}>
+        {isVisible ? 'Hide Data' : 'Show Data'}
+      </button>
 
-      <ul>
-        {data.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
+      {isVisible && (
+        <div>
+          <h1>Projects queried from SQLite</h1>
+
+          {status === 'loading' && <p>Loading...</p>}
+
+          {status === 'failed' && <p>Error: {error}</p>}
+
+          {status === 'succeeded' && (
+            <ul>
+              {projects.map((project) => (
+                <li key={project.id}>{project.name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 }
