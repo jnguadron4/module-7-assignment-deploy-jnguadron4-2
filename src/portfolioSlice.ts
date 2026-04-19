@@ -22,7 +22,7 @@ const initialState: PortfolioState = {
 };
 
 export const fetchProjects = createAsyncThunk('portfolio/fetchProjects', async () => {
-  const response = await axios.get('/api/data');
+  const response = await axios.get('https://module-7-assignment-deploy-jnguadron4-2.onrender.com/api/data');
   return response.data;
 });
 
