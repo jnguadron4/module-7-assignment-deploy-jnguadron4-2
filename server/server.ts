@@ -1,16 +1,13 @@
 import express from 'express'
 import type { Request, Response } from 'express';
 import sqlite3 from "sqlite3";
-
-import path from "path";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import compression from "compression";
+import helmet from "helmet";
+import cors from "cors";
 
 const app = express();
-
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const compression = require("compression");
-const helmet = require("helmet");
-const cors = require("cors");
 
 app.use(cors());
 app.use(helmet());
